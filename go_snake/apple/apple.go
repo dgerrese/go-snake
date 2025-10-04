@@ -1,4 +1,4 @@
-package go_snake
+package apple
 
 import (
 	"github.com/hajimehoshi/ebiten/v2"
@@ -8,26 +8,25 @@ import (
 )
 
 type Apple struct {
-	position image.Point
-	color    color.RGBA
+	Position image.Point
+	Color    color.RGBA
 }
 
 func NewApple(pos image.Point) *Apple {
 	return &Apple{
-		position: pos,
-		// select a random color from appleColors
-		color: randomAppleColor(),
+		Position: pos,
+		Color:    randomAppleColor(),
 	}
 }
 
 func (a *Apple) Render() (*ebiten.Image, *ebiten.DrawImageOptions) {
 	img := ebiten.NewImage(1, 1)
-	img.Fill(a.color)
+	img.Fill(a.Color)
 
 	opts := &ebiten.DrawImageOptions{}
 	opts.GeoM.Translate(
-		float64(a.position.X),
-		float64(a.position.Y),
+		float64(a.Position.X),
+		float64(a.Position.Y),
 	)
 
 	return img, opts

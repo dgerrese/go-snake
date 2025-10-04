@@ -1,6 +1,6 @@
 package util
 
-func IntListMin(nums []int) int {
+func IntSliceMin(nums []int) int {
 	if len(nums) == 0 {
 		panic("empty slice")
 	}
@@ -15,7 +15,7 @@ func IntListMin(nums []int) int {
 	return intMin
 }
 
-func IntListMax(nums []int) int {
+func IntSliceMax(nums []int) int {
 	if len(nums) == 0 {
 		panic("empty slice")
 	}

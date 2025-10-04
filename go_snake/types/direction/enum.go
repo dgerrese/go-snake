@@ -1,4 +1,4 @@
-package types
+package direction
 
 type Direction byte
 
