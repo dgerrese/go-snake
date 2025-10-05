@@ -5,6 +5,7 @@ import (
 	"github.com/hajimehoshi/bitmapfont/v3"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
+	"go-snake/go_snake/config"
 	"strings"
 )
 
@@ -38,6 +39,10 @@ func (g *Game) drawDebugInfo(screen *ebiten.Image) {
 	t.WriteString("Debug Info:\n")
 	t.WriteString(fmt.Sprintf("\tFPS: %.2f\n", ebiten.ActualFPS()))
 	t.WriteString(fmt.Sprintf("\tGame speed: %d ms/step\n", g.timePerStep.Milliseconds()))
+	t.WriteString(fmt.Sprintf("\tWorld scale: %.2f\n", g.worldScale))
+
+	ww, wh := g.world.Size()
+	t.WriteString(fmt.Sprintf("\tWorld size: %dx%d\n", ww, wh))
 
 	text.Draw(screen, t.String(), text.NewGoXFace(bitmapfont.Face), &text.DrawOptions{
 		DrawImageOptions: o,
@@ -50,25 +55,46 @@ func (g *Game) drawDebugInfo(screen *ebiten.Image) {
 }
 
 func (g *Game) drawGameOver(screen *ebiten.Image) {
-	var s float64 = 2
-	o := ebiten.DrawImageOptions{}
-	o.GeoM.Translate(
-		float64(screen.Bounds().Max.X)/(2*s),
-		float64(screen.Bounds().Max.Y)/(2*s),
+	ff := bitmapfont.Face
+	var ls = float64(16)
+
+	tl := []string{
+		"Game Over!",
+		fmt.Sprintf("Final Score: %d", g.score),
+		"Press R to Restart",
+	}
+
+	var maxX int
+	for _, l := range tl {
+		var lxsum int
+		for _, r := range l {
+			rb, _, _ := ff.GlyphBounds(r)
+			lxsum += (rb.Max.X - rb.Min.X).Round()
+		}
+		maxX = max(maxX, lxsum)
+	}
+
+	i := ebiten.NewImage(maxX, len(tl)*int(ls))
+
+	s := (g.worldScale * float64(min(config.GameConfig.WorldWidth, config.GameConfig.WorldHeight))) / float64(max(i.Bounds().Max.X, i.Bounds().Max.Y))
+
+	io := &ebiten.DrawImageOptions{}
+	io.GeoM.Translate(
+		float64(screen.Bounds().Max.X)/(2*s)-float64(i.Bounds().Max.X)/2,
+		float64(screen.Bounds().Max.Y)/(2*s)-float64(i.Bounds().Max.Y)/2,
 	)
-	o.GeoM.Scale(s, s)
+	io.GeoM.Scale(s, s)
 
-	t := strings.Builder{}
-	t.WriteString("Game Over!\n")
-	t.WriteString(fmt.Sprintf("Final Score: %d\n", g.score))
-	t.WriteString("Press R to Restart")
-
-	text.Draw(screen, t.String(), text.NewGoXFace(bitmapfont.Face), &text.DrawOptions{
-		DrawImageOptions: o,
+	to := ebiten.DrawImageOptions{}
+	to.GeoM.Translate(float64(i.Bounds().Max.X)/2, float64(i.Bounds().Max.Y)/2)
+	text.Draw(i, strings.Join(tl, "\n"), text.NewGoXFace(ff), &text.DrawOptions{
+		DrawImageOptions: to,
 		LayoutOptions: text.LayoutOptions{
 			PrimaryAlign:   text.AlignCenter,
-			SecondaryAlign: text.AlignStart,
-			LineSpacing:    16,
+			SecondaryAlign: text.AlignCenter,
+			LineSpacing:    ls,
 		},
 	})
+
+	screen.DrawImage(i, io)
 }
