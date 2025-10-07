@@ -1,12 +1,13 @@
 package game
 
 import (
-	"github.com/hajimehoshi/ebiten/v2"
 	"go-snake/go_snake/config"
 	"go-snake/go_snake/types/gamestate"
 	"go-snake/go_snake/world"
 	"image/color"
 	"time"
+
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type Game struct {

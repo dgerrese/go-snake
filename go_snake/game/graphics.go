@@ -2,11 +2,12 @@ package game
 
 import (
 	"fmt"
+	"go-snake/go_snake/config"
+	"strings"
+
 	"github.com/hajimehoshi/bitmapfont/v3"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
-	"go-snake/go_snake/config"
-	"strings"
 )
 
 func (g *Game) drawWorld(screen *ebiten.Image) {

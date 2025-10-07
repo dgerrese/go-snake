@@ -1,10 +1,11 @@
 package apple
 
 import (
-	"github.com/hajimehoshi/ebiten/v2"
 	"image"
 	"image/color"
 	"math/rand/v2"
+
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type Apple struct {

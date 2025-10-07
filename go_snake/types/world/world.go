@@ -1,9 +1,10 @@
 package world
 
 import (
-	"github.com/hajimehoshi/ebiten/v2"
 	"go-snake/go_snake/apple"
 	"image"
+
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 type World interface {

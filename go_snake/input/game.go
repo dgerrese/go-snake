@@ -1,9 +1,10 @@
 package input
 
 import (
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"go-snake/go_snake/config"
 	"go-snake/go_snake/events"
+
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 func GameControlInput() {
