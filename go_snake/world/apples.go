@@ -1,10 +1,11 @@
 package world
 
 import (
-	"go-snake/go_snake/apple"
 	"image"
 	"log"
 	"math/rand/v2"
+
+	"go-snake/go_snake/apple"
 )
 
 func (w *World) GetAppleAt(p image.Point) *apple.Apple {

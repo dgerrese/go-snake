@@ -1,16 +1,22 @@
 package world
 
 import (
-	"go-snake/go_snake/apple"
-	"go-snake/go_snake/snake"
 	"image"
 	"image/color"
+	"log"
+
+	"github.com/ebitenui/ebitenui/widget"
+
+	"go-snake/go_snake/apple"
+	"go-snake/go_snake/snake"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type World struct {
+	Container *widget.Container
+
 	width     int
 	height    int
 	apples    []*apple.Apple
@@ -26,15 +32,27 @@ func NewWorld(w, h int) *World {
 		debugMode: false,
 	}
 
+	world.createContainer()
 	world.initialize()
 
 	return world
 }
 
 func (w *World) Process() {
+	w.scaleContainer()
 	w.snake.Move()
 
 	w.supplyApples()
+
+	log.Default().Printf(
+		"container rect: %v",
+		w.Container.GetWidget().Rect,
+	)
+	log.Default().Printf(
+		"container minWidth: %v, minHeight: %v",
+		w.Container.GetWidget().MinWidth,
+		w.Container.GetWidget().MinHeight,
+	)
 }
 
 func (w *World) Render() *ebiten.Image {

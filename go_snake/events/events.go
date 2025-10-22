@@ -1,9 +1,10 @@
 package events
 
 import (
+	"image"
+
 	"go-snake/go_snake/apple"
 	"go-snake/go_snake/config"
-	"image"
 )
 
 var ActionCh = make(chan config.Action)

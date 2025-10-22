@@ -1,10 +1,11 @@
 package game
 
 import (
+	"log"
+
 	"go-snake/go_snake/config"
 	"go-snake/go_snake/events"
 	"go-snake/go_snake/types/gamestate"
-	"log"
 )
 
 func (g *Game) listenForMoveEvents(stopCh chan any) {
@@ -48,7 +49,11 @@ func (g *Game) listenForActionEvents(stopCh chan any) {
 			case config.ActionDecreaseGameSpeed:
 				g.decreaseGameSpeed(20)
 			case config.ActionPauseGame:
-				g.toggleGamePause()
+				if g.state == gamestate.Paused {
+					g.setGameStateRunning()
+				} else if g.state == gamestate.Running {
+					g.setGameStatePaused()
+				}
 			case config.ActionRestart:
 				if g.state == gamestate.Ended {
 					g.restart()
@@ -70,7 +75,7 @@ func (g *Game) listenForGameEvents(stopCh chan any) {
 		case e := <-events.GameCh:
 			switch e {
 			case events.DeathEvent:
-				g.setGameState(gamestate.Ended)
+				g.setGameStateEnded()
 			}
 		}
 	}

@@ -2,8 +2,9 @@ package game
 
 import (
 	"fmt"
-	"go-snake/go_snake/config"
 	"strings"
+
+	"go-snake/go_snake/config"
 
 	"github.com/hajimehoshi/bitmapfont/v3"
 	"github.com/hajimehoshi/ebiten/v2"

@@ -1,13 +1,18 @@
 package game
 
 import (
-	"go-snake/go_snake/config"
-	"go-snake/go_snake/types/gamestate"
-	"go-snake/go_snake/world"
 	"image/color"
 	"time"
 
+	"go-snake/go_snake/config"
+	"go-snake/go_snake/types/gamestate"
+	"go-snake/go_snake/world"
+
+	"github.com/ebitenui/ebitenui"
+	"github.com/ebitenui/ebitenui/image"
+	"github.com/ebitenui/ebitenui/widget"
 	"github.com/hajimehoshi/ebiten/v2"
+	"golang.org/x/image/colornames"
 )
 
 type Game struct {
@@ -19,12 +24,25 @@ type Game struct {
 	debugMode   bool
 	state       gamestate.GameState
 	stopCh      chan any
+	ui          *ebitenui.UI
+	removeFns   map[string]widget.RemoveChildFunc
 }
 
 func NewGame(msps int64) *Game {
+	root := widget.NewContainer(
+		widget.ContainerOpts.BackgroundImage(
+			image.NewNineSliceColor(colornames.Black),
+		),
+		widget.ContainerOpts.Layout(widget.NewAnchorLayout()),
+	)
+
 	return &Game{
 		timePerStep: time.Duration(msps * int64(time.Millisecond)),
-		state:       gamestate.Starting,
+		state:       gamestate.Menu,
+		ui: &ebitenui.UI{
+			Container: root,
+		},
+		removeFns: make(map[string]widget.RemoveChildFunc),
 	}
 }
 
@@ -49,10 +67,15 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Clear()
 	screen.Fill(color.RGBA{R: 0x44, G: 0x44, B: 0x44, A: 0xff})
 
+	if g.world != nil {
+		g.drawWorld(screen)
+	}
+
+	g.ui.Draw(screen)
+
 	if g.state == gamestate.Ended {
 		g.drawGameOver(screen)
 	} else {
-		g.drawWorld(screen)
 		g.drawScore(screen)
 	}
 
@@ -96,5 +119,5 @@ func (g *Game) restart() {
 	g.score = 0
 	g.world.Destroy()
 	g.world = world.NewWorld(config.GameConfig.WorldWidth, config.GameConfig.WorldHeight)
-	g.setGameState(gamestate.Running)
+	g.setGameStateRunning()
 }

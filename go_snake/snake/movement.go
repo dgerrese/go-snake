@@ -1,9 +1,10 @@
 package snake
 
 import (
+	"image"
+
 	"go-snake/go_snake/events"
 	"go-snake/go_snake/types/direction"
-	"image"
 )
 
 const directionQueueMaxLength = 3

@@ -1,12 +1,13 @@
 package snake
 
 import (
+	"image"
+	"image/color"
+
 	"go-snake/go_snake/events"
 	"go-snake/go_snake/types/direction"
 	"go-snake/go_snake/types/world"
 	"go-snake/go_snake/util"
-	"image"
-	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )

@@ -1,8 +1,9 @@
 package world
 
 import (
-	"go-snake/go_snake/apple"
 	"image"
+
+	"go-snake/go_snake/apple"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )

@@ -1,10 +1,11 @@
 package snake
 
 import (
+	"log"
+
 	"go-snake/go_snake/config"
 	"go-snake/go_snake/events"
 	"go-snake/go_snake/types/direction"
-	"log"
 )
 
 func (s *Snake) listenForTurnEvents(stopCh chan any) {
